@@ -88,6 +88,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cliente\Cliente.cs" />
+    <Compile Include="Correo.cs" />
+    <Compile Include="Localizacion\Ciudades.cs" />
     <Compile Include="Localizacion\Localizacion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -10,7 +10,7 @@ namespace UtilidadesLibreria.Cliente
 {
   
         [Serializable]
-        [Table("usuario", Schema = "usuarios")]
+        [Table("cliente", Schema = "cliente")]
         /// <summary>
         /// Clase que mapea la tabla cliente en el esquema cliente de la base de datos
         /// </summary>
@@ -22,6 +22,7 @@ namespace UtilidadesLibreria.Cliente
             private long telefono;
             private string localizacion_user;
             private DateTime fecha;
+            private string modelo;
             private string departamento;
             private string ciudad;
 
@@ -39,13 +40,14 @@ namespace UtilidadesLibreria.Cliente
             public string Localizacion_user { get => localizacion_user; set => localizacion_user = value; }
             [Column("fecha")]
             public DateTime Fecha { get => fecha; set => fecha = value; }
-
-        // datos obtenidos por foreing key de la tabla localizacion
-        [NotMapped]
+            [Column("modelo")]
+            public string Modelo { get => modelo; set => modelo = value; }
+             // datos obtenidos de de la tabla localizacion
+            [NotMapped]
             public string Departamento { get => departamento; set => departamento = value; }
             [NotMapped]
             public string Ciudad { get => ciudad; set => ciudad = value; }
-       
+      
     }
     
 }

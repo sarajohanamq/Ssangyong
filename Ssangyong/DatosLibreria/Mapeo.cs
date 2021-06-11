@@ -14,7 +14,7 @@ namespace DatosLibreria
     /// </summary>
     class Mapeo : DbContext
     {
-        public Mapeo() : base("name=owpartConexion") { }
+        public Mapeo() : base("name=SsangyongConexion") { }
         public DbSet<Cliente> clientes { get; set; }
         public DbSet<Localizacion> localizacion { get; set; }
     }

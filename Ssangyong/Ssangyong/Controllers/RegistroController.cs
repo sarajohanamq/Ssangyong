@@ -7,9 +7,14 @@ using System.Web.Http;
 using UtilidadesLibreria.Cliente;
 using UtilidadesLibreria.Localizacion;
 using LogicaNegocioLibreria;
+using System.Web.Http.Cors;
+using System.Web.Http.Description;
+using System.Threading.Tasks;
+
 namespace Ssangyong.Controllers
 {
     [AllowAnonymous]
+    [EnableCors("*", "*", "*")]
     public class RegistroController : ApiController
     {
         private LogicaNegocioLibreria.Registro GetRegistro = new LogicaNegocioLibreria.Registro();
@@ -18,9 +23,20 @@ namespace Ssangyong.Controllers
         /// </summary>
         /// <returns>devuelve una lista con el id del departamento y el nombre del mismo</returns>
         [HttpGet]
-        public List<Localizacion> GetDepartamento()
+        [ResponseType(typeof(List<Localizacion>))]
+        public IHttpActionResult GetDepartamento()
         {
-            return GetRegistro.GetDepartamento();
+           
+            try
+            {
+                List<Localizacion> localizacions = GetRegistro.GetDepartamento();
+                return Ok(localizacions);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+            
         }
         /// <summary>
         ///Llama a la logica de negocio para obtener las ciudades
@@ -28,18 +44,46 @@ namespace Ssangyong.Controllers
         /// <param name="id"></param>
         /// <returns>Un json con las ciudades del departamento deseado</returns>
         [HttpGet]
-        public List<string> GetCiudad(int id)
+        [ResponseType(typeof(List<Ciudades>))]
+        public IHttpActionResult GetCiudad(int id)
         {
-            return GetRegistro.GetCiudad(id);
+           
+            try
+            {
+                List<Ciudades> ciudades = GetRegistro.GetCiudad(id);
+              
+                return Ok(ciudades);
+                
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
         }
         /// <summary>
         /// Llama a la logica de negocio para insertar los clientes
         /// </summary>
         /// <param name="cliente"> Cliente completo para insertar</param>
         [HttpPost]
-        public void InsertarRegistro(Cliente cliente)
+        public IHttpActionResult InsertarRegistro([FromBody] Cliente cliente)
         {
-            GetRegistro.InsertarRegistro(cliente);
+            try
+            {
+                cliente.Fecha = DateTime.Now;
+                string mensaje = GetRegistro.InsertarRegistro(cliente);
+                if (mensaje.Equals("conflict"))
+                {
+                    return Conflict();
+                }
+                return Ok();
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+                
+            }
+          
         }
     }
 }

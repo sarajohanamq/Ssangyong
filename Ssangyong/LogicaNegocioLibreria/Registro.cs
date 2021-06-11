@@ -27,7 +27,7 @@ namespace LogicaNegocioLibreria
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un json con las ciudades del departamento deseado</returns>
-        public List<string> GetCiudad(int id)
+        public List<Ciudades> GetCiudad(int id)
         {
             return GetRegistro.GetCiudad(id);
         }
@@ -35,9 +35,9 @@ namespace LogicaNegocioLibreria
         /// Llama a la libreria de datos para insertar los clientes
         /// </summary>
         /// <param name="cliente"> Cliente completo para insertar</param>
-        public void InsertarRegistro(Cliente cliente)
+        public string InsertarRegistro(Cliente cliente)
         {
-            GetRegistro.InsertarRegistro(cliente);
+            return GetRegistro.InsertarRegistro(cliente);
         }
     }
 }

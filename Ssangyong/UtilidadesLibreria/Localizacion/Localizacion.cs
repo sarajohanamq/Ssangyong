@@ -7,7 +7,7 @@ using System.Text;
 namespace UtilidadesLibreria.Localizacion
 {
     [Serializable]
-    [Table("usuario", Schema = "usuarios")]
+    [Table("localizacion", Schema = "localizacion")]
     /// <summary>
     /// Clase que mapea la tabla localizacion en el esquema localizacion de la base de datos
     /// </summary>

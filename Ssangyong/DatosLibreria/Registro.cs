@@ -22,10 +22,10 @@ namespace DatosLibreria
         public List<Localizacion> GetDepartamento()
         {
             List<Localizacion> localizacion = db.localizacion.ToList();
-            List<Localizacion> departamentos = null;
+            List<Localizacion> departamentos = new List<Localizacion>();
             foreach (Localizacion departamento in localizacion)
             {
-                Localizacion dep = null;
+                Localizacion dep = new Localizacion();
                 dep.Departamento = departamento.Departamento;
                 dep.Id = departamento.Id;
                 departamentos.Add(dep);
@@ -37,18 +37,42 @@ namespace DatosLibreria
         /// </summary>
         /// <param name="id">id del departamento a buscar</param>
         /// <returns>Un json con las ciudades del departamento deseado</returns>
-        public List<string> GetCiudad(int id)
+        public List<Ciudades> GetCiudad(int id)
         {
-            return JsonConvert.DeserializeObject<List<string>>(db.localizacion.Where(x => x.Id == id).First().Ciudad);
+            return JsonConvert.DeserializeObject<List<Ciudades>>(db.localizacion.Where(x => x.Id == id).First().Ciudad);
         }
         /// <summary>
         /// Inserta el registro del cliente
         /// </summary>
         /// <param name="cliente"> Cliente completo para insertar</param>
-        public void InsertarRegistro(Cliente cliente)
+        public string InsertarRegistro(Cliente clienteInsert)
         {
-            db.clientes.Add(cliente);
-            db.SaveChanges();
+            List<Cliente> cliente = db.clientes.Where(x => x.Email == clienteInsert.Email).ToList();
+            
+            if ( cliente!= null)
+            {
+                foreach (Cliente cliente1 in cliente)
+                {
+                    if (cliente1.Fecha.Day == clienteInsert.Fecha.Day && cliente1.Fecha.Month == clienteInsert.Fecha.Month && cliente1.Fecha.Year == clienteInsert.Fecha.Year)
+                    {
+                        return "conflict";
+                    }
+                }
+
+                db.clientes.Add(clienteInsert);
+                db.SaveChanges();
+                new Correo().enviarCorreo(clienteInsert);
+                return "ok";
+            }
+            else
+            {
+              
+                db.clientes.Add(clienteInsert);
+                db.SaveChanges();
+                return "ok";
+            }
+           
+          
         }
     }
 }
